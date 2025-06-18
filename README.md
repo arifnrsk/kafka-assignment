@@ -592,6 +592,29 @@ docker system prune -f
 make start-kafka
 ```
 
+**5. Snappy Compression Codec Error**
+If you encounter `UnsupportedCodecError: Libraries for snappy compression codec not found`:
+
+**Windows:**
+```powershell
+# Install snappy compression library
+pip install python-snappy==0.6.1
+
+# If error persists, recreate topic without compression
+docker exec kafka-broker /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic random-events
+docker exec kafka-broker /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic random-events --partitions 3 --replication-factor 1 --config compression.type=uncompressed
+```
+
+**Mac/Linux:**
+```bash
+# Install snappy compression library
+pip install python-snappy==0.6.1
+
+# If error persists, recreate topic without compression
+docker exec kafka-broker /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic random-events
+docker exec kafka-broker /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic random-events --partitions 3 --replication-factor 1 --config compression.type=uncompressed
+```
+
 ## Kafka Concepts Implemented
 - **Topics & Partitions** - Message organization and parallelism
 - **Producer/Consumer API** - Application integration patterns
