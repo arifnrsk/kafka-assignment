@@ -1,0 +1,50 @@
+{
+  "topics": [
+    {
+      "name": "random-events",
+      "description": "Main topic for random events from producer",
+      "partitions": 3,
+      "replication_factor": 1,
+      "config": {
+        "cleanup.policy": "delete",
+        "retention.ms": 86400000,
+        "segment.ms": 604800000,
+        "min.insync.replicas": 1
+      }
+    },
+    {
+      "name": "processed-events",
+      "description": "Topic for processed events (optional)",
+      "partitions": 3,
+      "replication_factor": 1,
+      "config": {
+        "cleanup.policy": "delete",
+        "retention.ms": 86400000
+      }
+    },
+    {
+      "name": "error-events",
+      "description": "Topic for error events (optional)",
+      "partitions": 1,
+      "replication_factor": 1,
+      "config": {
+        "cleanup.policy": "delete",
+        "retention.ms": 604800000
+      }
+    }
+  ],
+  "consumer_groups": [
+    {
+      "name": "event-processors",
+      "description": "Main consumer group for processing events",
+      "topics": ["random-events"],
+      "consumers": 1
+    },
+    {
+      "name": "analytics-consumers",
+      "description": "Consumer group for analytics (optional)",
+      "topics": ["random-events", "processed-events"],
+      "consumers": 2
+    }
+  ]
+} 

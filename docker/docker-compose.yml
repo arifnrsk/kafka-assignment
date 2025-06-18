@@ -1,0 +1,127 @@
+services:
+  # Zookeeper Service
+  zookeeper:
+    image: bitnami/zookeeper:3.8
+    container_name: kafka-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    volumes:
+      - zookeeper_data:/bitnami/zookeeper
+    networks:
+      - kafka-network
+    restart: unless-stopped
+
+  # Kafka Broker Service
+  kafka:
+    image: bitnami/kafka:3.4
+    container_name: kafka-broker
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      # Basic Configuration
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      
+      # Listener Configuration
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      
+      # Topic Configuration (Assignment Requirements)
+      - KAFKA_CFG_NUM_PARTITIONS=3
+      - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=1
+      - KAFKA_CFG_MIN_INSYNC_REPLICAS=1
+      
+      # Performance & Retention
+      - KAFKA_CFG_LOG_RETENTION_HOURS=24
+      - KAFKA_CFG_LOG_RETENTION_BYTES=1073741824
+      - KAFKA_CFG_LOG_SEGMENT_BYTES=1073741824
+      - KAFKA_CFG_LOG_CLEANUP_POLICY=delete
+      
+      # Consumer Configuration
+      - KAFKA_CFG_GROUP_INITIAL_REBALANCE_DELAY_MS=0
+      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=1
+      
+      # Auto Topic Creation
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      
+      # JVM Configuration
+      - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
+      
+    volumes:
+      - kafka_data:/bitnami/kafka
+    depends_on:
+      - zookeeper
+    networks:
+      - kafka-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions.sh --bootstrap-server localhost:9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Kafka UI for Management
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local-kafka
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      - KAFKA_CLUSTERS_0_READONLY=false
+      
+      # UI Configuration
+      - SERVER_SERVLET_CONTEXT_PATH=/
+      - LOGGING_LEVEL_ROOT=INFO
+      - LOGGING_LEVEL_COM_PROVECTUS=DEBUG
+      
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - kafka-network
+    restart: unless-stopped
+
+  # Kafka Schema Registry (Bonus Feature)
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.4.0
+    container_name: kafka-schema-registry
+    ports:
+      - "8081:8081"
+    environment:
+      - SCHEMA_REGISTRY_HOST_NAME=schema-registry
+      - SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=kafka:9092
+      - SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081
+      - SCHEMA_REGISTRY_KAFKASTORE_TOPIC=_schemas
+      - SCHEMA_REGISTRY_DEBUG=true
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - kafka-network
+    restart: unless-stopped
+
+# Volumes for data persistence
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+
+# Custom network
+networks:
+  kafka-network:
+    driver: bridge
+    name: kafka-network 

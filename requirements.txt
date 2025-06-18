@@ -1,0 +1,38 @@
+# Kafka Client Libraries
+kafka-python==2.0.2
+confluent-kafka[avro]==2.3.0
+
+# Schema Registry & Avro
+avro-python3==1.11.2
+confluent-kafka[schema-registry]==2.3.0
+
+# Data Processing
+pandas==2.0.3
+numpy==1.24.3
+pydantic==1.10.12
+
+# JSON & Serialization
+orjson==3.9.10
+
+# Logging & Monitoring
+structlog==23.1.0
+colorlog==6.7.0
+
+# Testing
+pytest==7.4.0
+pytest-cov==4.1.0
+pytest-mock==3.11.1
+
+# Development Tools
+black==23.7.0
+flake8==6.0.0
+isort==5.12.0
+
+# Environment Management
+python-decouple==3.8
+
+# Date & Time
+python-dateutil==2.8.2
+
+# HTTP Client (for health checks)
+requests==2.31.0 
