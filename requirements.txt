@@ -5,6 +5,7 @@ confluent-kafka[avro]==2.3.0
 # Schema Registry & Avro
 avro-python3==1.10.2
 confluent-kafka[schema-registry]==2.3.0
+python-snappy==0.6.1
 
 # Data Processing
 pandas==2.0.3
