@@ -412,6 +412,98 @@ class KafkaConfigManager:
         # Consumer group settings
 ```
 
+### 5. Avro Producer (`src/producer/avro_event_producer.py`)
+
+**Schema Registry Integration:**
+```python
+class AvroEventProducer:
+    def __init__(self):
+        # Confluent Kafka Producer with Avro support
+        self.producer = None
+        self.schema_registry = SchemaRegistryManager()
+        self.avro_serializer = None
+        
+    def _setup_avro_serialization(self):
+        # Load schema from config/event_schema.avsc
+        # Register schema with Schema Registry
+        # Create Avro serializer with schema validation
+        
+    def _create_producer(self) -> AvroProducer:
+        # Enterprise-grade producer configuration
+        # Idempotence and compression settings
+        # Error handling and retries
+        
+    def start_producing(self):
+        # Binary Avro serialization
+        # Schema-validated event generation
+        # Efficient data compression
+```
+
+**Enterprise Features:**
+- **Idempotent Delivery** - Prevents duplicate messages
+- **Snappy Compression** - Efficient binary compression
+- **Schema Validation** - Automatic data validation
+- **Error Recovery** - Comprehensive error handling
+
+### 6. Avro Consumer (`src/consumer/avro_event_consumer.py`)
+
+**Binary Deserialization:**
+```python
+class AvroEventConsumer:
+    def __init__(self):
+        # Confluent Kafka Consumer with Avro support
+        self.consumer = None
+        self.schema_registry = SchemaRegistryManager()
+        self.avro_deserializer = None
+        
+    def _setup_avro_deserialization(self):
+        # Retrieve schema from Schema Registry
+        # Create Avro deserializer
+        # Handle schema evolution compatibility
+        
+    def _process_avro_message(self, message):
+        # Binary to Python object conversion
+        # Enhanced event analytics
+        # Advanced metadata processing
+```
+
+**Advanced Analytics:**
+- **Enhanced Location Data** - City + Province information
+- **Session Tracking** - Detailed session management
+- **Device Intelligence** - OS and browser detection
+- **Environment Awareness** - Production/development context
+
+### 7. Schema Registry Manager (`src/utils/schema_registry.py`)
+
+**Centralized Schema Management:**
+```python
+class SchemaRegistryManager:
+    def __init__(self):
+        # Schema Registry client initialization
+        # Health check and connectivity validation
+        
+    def register_schema(self, subject: str, schema: str) -> int:
+        # Schema registration with versioning
+        # Backward/forward compatibility checks
+        # Schema evolution support
+        
+    def get_latest_schema(self, subject: str) -> AvroSchema:
+        # Schema retrieval with caching
+        # Version management
+        # Error handling for missing schemas
+        
+    def create_serializer(self, subject: str) -> AvroSerializer:
+        # Serializer factory with schema validation
+        # Performance optimization
+        # Type safety enforcement
+```
+
+**Schema Evolution Benefits:**
+- **Backward Compatibility** - Old consumers work with new schemas
+- **Forward Compatibility** - New consumers work with old schemas
+- **Field Addition** - Add fields without breaking existing systems
+- **Data Validation** - Automatic schema compliance checking
+
 ## Event Data Schema
 
 ### Generated Event Structure
