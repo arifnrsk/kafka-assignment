@@ -5,7 +5,11 @@ confluent-kafka[avro]==2.3.0
 # Schema Registry & Avro
 avro-python3==1.10.2
 confluent-kafka[schema-registry]==2.3.0
+
+# Kafka Compression Codecs (prevent codec errors)
 python-snappy==0.6.1
+python-lz4==4.3.2
+zstandard==0.21.0
 
 # Data Processing
 pandas==2.0.3

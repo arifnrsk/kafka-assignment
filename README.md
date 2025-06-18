@@ -592,28 +592,23 @@ docker system prune -f
 make start-kafka
 ```
 
-**5. Snappy Compression Codec Error**
-If you encounter `UnsupportedCodecError: Libraries for snappy compression codec not found`:
+**5. Compression Codec Issues (Rare)**
+This project includes all necessary compression libraries. If you still encounter codec errors:
 
-**Windows:**
-```powershell
-# Install snappy compression library
-pip install python-snappy==0.6.1
-
-# If error persists, recreate topic without compression
-docker exec kafka-broker /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic random-events
-docker exec kafka-broker /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic random-events --partitions 3 --replication-factor 1 --config compression.type=uncompressed
-```
-
-**Mac/Linux:**
 ```bash
-# Install snappy compression library
-pip install python-snappy==0.6.1
+# Verify compression libraries are installed
+pip list | grep -E "(snappy|lz4|zstandard)"
 
-# If error persists, recreate topic without compression
-docker exec kafka-broker /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic random-events
-docker exec kafka-broker /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic random-events --partitions 3 --replication-factor 1 --config compression.type=uncompressed
+# Should show:
+# python-lz4      4.3.2
+# python-snappy   0.6.1  
+# zstandard       0.21.0
+
+# If missing, reinstall requirements
+pip install -r requirements.txt
 ```
+
+**Note**: Kafka broker is pre-configured with `compression.type=uncompressed` to prevent codec issues.
 
 ## Kafka Concepts Implemented
 - **Topics & Partitions** - Message organization and parallelism

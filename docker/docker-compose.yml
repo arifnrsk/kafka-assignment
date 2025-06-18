@@ -54,6 +54,10 @@ services:
       # Auto Topic Creation
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       
+      # Compression Configuration (prevent codec errors)
+      - KAFKA_CFG_COMPRESSION_TYPE=uncompressed
+      - KAFKA_CFG_LOG_COMPRESSION_TYPE=uncompressed
+      
       # JVM Configuration
       - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
       
