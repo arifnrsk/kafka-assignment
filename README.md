@@ -98,7 +98,7 @@ Assignment Day 24 - Kafka/
 ```powershell
 # Clone and setup
 git clone https://github.com/arifnrsk/kafka-assignment
-cd Assignment Day 24 - Kafka
+cd kafka-assignment
 
 # Complete setup and start
 make setup
@@ -109,7 +109,7 @@ make start-kafka
 ```bash
 # Clone and setup
 git clone https://github.com/arifnrsk/kafka-assignment
-cd Assignment Day 24 - Kafka
+cd kafka-assignment
 
 # Complete setup and start
 make setup-mac

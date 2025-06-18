@@ -11,7 +11,7 @@ This project provides two implementations:
 ```powershell
 # 1. Clone repository
 git clone https://github.com/arifnrsk/kafka-assignment
-cd Assignment Day 24 - Kafka
+cd kafka-assignment
 
 # 2. Setup environment
 make setup
@@ -32,7 +32,7 @@ make start-consumer    # Terminal 2
 ```bash
 # 1. Clone repository
 git clone https://github.com/arifnrsk/kafka-assignment
-cd Assignment Day 24 - Kafka
+cd kafka-assignment
 
 # 2. Setup environment
 make setup-mac
