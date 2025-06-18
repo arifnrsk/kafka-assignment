@@ -5,7 +5,6 @@
 [![Kafka](https://img.shields.io/badge/Apache%20Kafka-3.4-orange.svg)](https://kafka.apache.org)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://docker.com)
 [![Avro](https://img.shields.io/badge/Apache%20Avro-Schema%20Registry-brightgreen.svg)](https://avro.apache.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Assignment Objectives
 
