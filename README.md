@@ -595,6 +595,21 @@ make start-kafka
 **5. Compression Codec Issues (Rare)**
 This project includes all necessary compression libraries. If you still encounter codec errors:
 
+**Windows:**
+```powershell
+# Verify compression libraries are installed
+pip list | findstr -E "(snappy|lz4|zstandard)"
+
+# Should show:
+# python-lz4      4.3.2
+# python-snappy   0.6.1  
+# zstandard       0.21.0
+
+# If missing, reinstall requirements
+pip install -r requirements.txt
+```
+
+**Mac/Linux:**
 ```bash
 # Verify compression libraries are installed
 pip list | grep -E "(snappy|lz4|zstandard)"
